@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Турагентство | Заявки</title>
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/mdb.min.css"/>
+    <link rel="stylesheet" href="/css/icons.css">
+    <script type="text/javascript" src="/js/mdb.min.js"></script>
+    <script type="text/javascript" src="/js/tour-api.js"></script>
+    <style>
+        .info-block {
+            font-weight: bold;
+            color: white;
+            display: none;
+            width: 30%;
+            font-size: 18px;
+            padding: 5px;
+            position: fixed;
+            top: 45px;
+            left: 0;
+            right: 0;
+        }
+    </style>
+</head>
+<body onload="TourApiController.init()">
+<div th:replace="~{fragments/navbar.html :: navbar}"></div>
+<div class="container h-100 justify-content-center bg-light rounded-1 p-5">
+    <div id="infoBlock" class="container text-center info-block">
+        Ошибка
+    </div>
+    <div class="container w-50">
+        <h4 class="text-center mb-3">Создание заявки</h4>
+        <div>
+            <div class="row align-items-start">
+                <div class="col">
+                    <input hidden="hidden" id="tourId">
+                    <div class="mb-3">
+                        <label class="form-label" for="clientInitials">Введите ФИО клиента</label>
+                        <input class="form-control" placeholder="ФИО Клиента" id="clientInitials">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="phoneNumber">Введите номер Клиента (+7)</label>
+                        <input class="form-control" placeholder="Телефон Клиента" maxlength="12" id="phoneNumber">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="sum">Сумма тура</label>
+                        <input class="form-control" placeholder="Сумма тура" type="number" id="sum">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <label class="form-label" for="startDate">Дата начала</label>
+                        <input class="form-control" placeholder="Дата начала" type="date" id="startDate">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="endDate">Дата окончания</label>
+                        <input class="form-control" placeholder="Дата окончания" type="date" id="endDate">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="direction">Направление Клиента</label>
+                        <input class="form-control" placeholder="Направление" type="text" id="direction">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="status">Выберете статус</label>
+                    <select class="form-select" id="status">
+                        <option disabled selected>Статус</option>
+                        <option name="В ожидании">В ожидании</option>
+                        <option name="Готово">Готово</option>
+                        <option name="Завершена">Завершена</option>
+                    </select>
+                </div>
+                <button class="btn btn-dark" onclick="TourApiController.saveTourRequest($('#tourId').val())">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <h3 class="text-center">Заявки на тур</h3>
+    <table class="table mt-3">
+        <thead class="text-center">
+        <tr>
+            <th>Клиент</th>
+            <th>Телефон Клиента</th>
+            <th>Дата начала тура</th>
+            <th>Дата окончания тура</th>
+            <th>Направление тура</th>
+            <th>Сумма</th>
+            <th>Статус</th>
+            <th>Действие</th>
+        </tr>
+        </thead>
+        <tbody class="text-center" id="tourRequests"></tbody>
+    </table>
+</div>
+<link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        rel="stylesheet"
+/>
+<link
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+        rel="stylesheet"
+/>
+</body>
+</html>
