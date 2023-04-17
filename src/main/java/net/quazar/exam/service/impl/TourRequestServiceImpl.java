@@ -7,6 +7,7 @@ import net.quazar.exam.exception.TourRequestNotFoundException;
 import net.quazar.exam.repository.TourRequestRepository;
 import net.quazar.exam.service.TourRequestService;
 import net.quazar.exam.util.mapper.TourRequestMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +27,16 @@ public class TourRequestServiceImpl implements TourRequestService {
     @Override
     public List<TourRequestDto> findAll() {
         return repository.findAll().stream().map(mapper::mapTo).toList();
+    }
+
+    @Override
+    public List<TourRequestDto> findAll(PageRequest pageRequest) {
+        return repository.findAll(pageRequest).map(mapper::mapTo).stream().toList();
+    }
+
+    @Override
+    public List<TourRequestDto> findByStatus(String status) {
+        return repository.findAllByStatus(status).stream().map(mapper::mapTo).toList();
     }
 
     @Override

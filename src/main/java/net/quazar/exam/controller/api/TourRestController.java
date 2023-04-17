@@ -13,12 +13,14 @@ import java.util.List;
 public class TourRestController {
     private final TourRequestService service;
 
-    @GetMapping("/")
-    public List<TourRequestDto> getAll() {
+    @GetMapping
+    public List<TourRequestDto> getAll(@RequestParam(required = false) String status) {
+        if (status != null && !status.isEmpty())
+            return service.findByStatus(status);
         return service.findAll();
     }
 
-    @PostMapping("/")
+    @PostMapping
     public TourRequestDto create(@RequestBody TourRequestDto requestDto) {
         return service.save(requestDto);
     }
