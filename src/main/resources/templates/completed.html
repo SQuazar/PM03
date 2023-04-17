@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Турагентство | Завершённые заявки</title>
+    <meta th:replace="~{fragments/dependencies :: head}">
+</head>
+<body onload="TourApiController.loadCompletedTours()">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container">
+    <h3 class="text-center">Завершённые заявки</h3>
+    <table class="table mt-3">
+        <thead class="text-center bg-light">
+        <tr>
+            <th>Клиент</th>
+            <th>Телефон Клиента</th>
+            <th>Дата начала тура</th>
+            <th>Дата окончания тура</th>
+            <th>Направление тура</th>
+            <th>Сумма</th>
+            <th>Статус</th>
+            <th>Действие</th>
+        </tr>
+        </thead>
+        <tbody class="text-center" id="tourRequests"></tbody>
+    </table>
+</div>
+<div th:replace="~{fragments/dependencies :: footer-links}"></div>
+</body>
+</html>
