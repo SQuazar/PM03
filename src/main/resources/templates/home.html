@@ -2,28 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta th:name="_csrf" th:content="${_csrf.token}"/>
-    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Турагентство | Заявки</title>
-    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="/css/mdb.min.css"/>
-    <link rel="stylesheet" href="/css/icons.css">
-    <script type="text/javascript" src="/js/mdb.min.js"></script>
-    <script type="text/javascript" src="/js/tour-api.js"></script>
-    <style>
-        .info-block {
-            font-weight: bold;
-            color: white;
-            display: none;
-            width: 30%;
-            font-size: 18px;
-            padding: 5px;
-            position: fixed;
-            top: 45px;
-            left: 0;
-            right: 0;
-        }
-    </style>
+    <meta th:replace="~{fragments/dependencies :: head}">
 </head>
 <body onload="TourApiController.init()">
 <div th:replace="~{fragments/navbar.html :: navbar}"></div>
@@ -81,7 +61,7 @@
 <div class="container mt-4">
     <h3 class="text-center">Заявки на тур</h3>
     <table class="table mt-3">
-        <thead class="text-center">
+        <thead class="text-center bg-light">
         <tr>
             <th>Клиент</th>
             <th>Телефон Клиента</th>
@@ -96,13 +76,6 @@
         <tbody class="text-center" id="tourRequests"></tbody>
     </table>
 </div>
-<link
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        rel="stylesheet"
-/>
-<link
-        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-        rel="stylesheet"
-/>
+<div th:replace="~{fragments/dependencies :: footer-links}"></div>
 </body>
 </html>
