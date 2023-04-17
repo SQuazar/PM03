@@ -16,12 +16,43 @@ const TourApiController = {
     },
 
     loadTours: function () {
-        $.ajax('/api/tours/', {
+        $.ajax('/api/tours', {
             method: 'GET',
             contentType: "application/json",
             success: function (data) {
                 const tbody = $('#tourRequests')[0];
-                tbody.innerHTML = TourApiController.createTourRowsFromData(data);
+                const actions = [
+                    {
+                        'class': ['fas', 'fa-trash', 'text-danger', 'icon-action', 'me-1'],
+                        'title': 'Удалить',
+                        'click': `TourApiController.deleteTour(o['id'])`
+                    },
+                    {
+                        'class': ['fas', 'fa-pencil', 'text-primary', 'icon-action', 'ms-1'],
+                        'title': 'Редактировать',
+                        'click': `TourApiController.editTour(o['id'])`
+                    }
+                ]
+                tbody.innerHTML = TourApiController.createTourRowsFromData(data, actions);
+                TourApiController.tours = data;
+            }
+        })
+    },
+
+    loadCompletedTours: function () {
+        $.ajax('/api/tours?status=Завершена', {
+            method: 'GET',
+            contentType: 'application/json',
+            success: function (data) {
+                const tbody = $('#tourRequests')[0];
+                const actions = [
+                    {
+                        'class': ['fas', 'fa-trash', 'text-danger', 'icon-action', 'me-1'],
+                        'title': 'Удалить',
+                        'click': `TourApiController.deleteTour(o['id'])`
+                    }
+                ]
+                tbody.innerHTML = TourApiController.createTourRowsFromData(data, actions);
                 TourApiController.tours = data;
             }
         })
@@ -46,7 +77,7 @@ const TourApiController = {
             request.id = id;
         const token = $("meta[name='_csrf']").attr("content");
         const header_name = $("meta[name='_csrf_header']").attr("content");
-        $.ajax('/api/tours/', {
+        $.ajax('/api/tours', {
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(request),
@@ -59,9 +90,10 @@ const TourApiController = {
                 $('#phoneNumber').val('');
                 $('#sum').val('');
                 $('#direction').val('');
-                $('#startDate').val('')
-                $('#endDate').val('')
-                $('#tourId').val('')
+                $('#startDate').val('');
+                $('#endDate').val('');
+                $('#tourId').val('');
+                $('#status').prop('selectedIndex', 0);
             }
         })
     },
@@ -89,11 +121,12 @@ const TourApiController = {
         $('#startDate').val(tour['tour_start']);
         $('#endDate').val(tour['tour_end']);
         $('#tourId').val(tour['id']);
+        $('#status').val(tour['status']);
     },
 
     //[{"id":1,"client":"Client","phone_number":"+79999999999","tour_sum":100000.0,"tour_direction":"Турция","tour_start":"2023-04-01","tour_end":"2023-04-30"}]
 
-    createTourRowsFromData: function (data) {
+    createTourRowsFromData: function (data, actions) {
         let rows = ``;
         data.forEach((o) => {
             rows += `<tr><td>${o['client']}</td>
@@ -104,8 +137,10 @@ const TourApiController = {
                     <td>${o['tour_sum']} ₽</td>
                     <td>${o['status']}</td>
                     <td>
-                        <i class="fas fa-trash text-danger icon-action me-1" title="Удалить" onclick="TourApiController.deleteTour(${o['id']})"></i>
-                        <i class="fas fa-pencil text-primary icon-action ms-1" title="Редактировать" onclick="TourApiController.editTour(${o['id']})"></i>
+                        ${actions.map((action) => {
+                            return `<i class="${action['class'].join(' ')}" title="${action['title']}"
+                                    onclick="${action['click'].replace('o[\'id\']', o['id'])}"></i>`;
+                        }).join(' ')}
                     </td>
                     </tr>`;
         })
